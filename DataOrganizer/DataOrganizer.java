@@ -51,7 +51,7 @@ public class DataOrganizer {
         }
     }
 
-    private void processByte(int Byte){
+    private void checkMarker(int Byte){
         if (this.firstByteMarkerSet && markerBytes.containsValue(Byte)){
             for ( String key : markerBytes.keySet() ) {
                 if (key == "startMarker"){
@@ -63,5 +63,9 @@ public class DataOrganizer {
             }
         }
         this.firstByteMarkerSet = (Byte == markerBytes.get("startMarker"));
+    }
+
+    private void processByte(int Byte){
+        checkMarker(Byte);
     }
 }
