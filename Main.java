@@ -1,17 +1,18 @@
 import java.io.*;
+import DataOrganizer.DataOrganizer;
 
 public class Main {
 
+
     public static void main(String[] args) {
         String fileName = "Kwiatek_1533.jpg";
-        int buffer;
-        System.out.println(fileName);
+
         try{
             FileInputStream fileReader = new FileInputStream(fileName);
-            while((buffer = fileReader.read()) != -1) {
-                System.out.println(Integer.toHexString(buffer));
-            } 
-            System.out.println(buffer);
+            DataOrganizer dataOrganizer = new DataOrganizer(fileReader);
+
+            dataOrganizer.run();
+
             fileReader.close();
         } catch(FileNotFoundException ex) {
             System.out.println(
