@@ -18,7 +18,7 @@ public class DataOrganizer {
         markerBytes.put("SOI", 0xD8);
         markerBytes.put("SOF0", 0xC0);
         markerBytes.put("SOF2", 0xC2);
-        markerBytes.put("DHT ", 0xC4);
+        markerBytes.put("DHT", 0xC4);
         markerBytes.put("DQT", 0xDB);
         markerBytes.put("DRI", 0xDD);
         markerBytes.put("SOS", 0xDA);
@@ -30,11 +30,81 @@ public class DataOrganizer {
         int bufforByte;
 
         try{
-            checkStartOfImage();
-
-            while((bufforByte = inputStream.read()) != -1) {
-                processByte(bufforByte);
+            // checkStartOfImage();
+            int k =0;
+            while((bufforByte = inputStream.read()) != -1){
+               
+                if (this.firstByteMarkerSet && markerBytes.containsValue(bufforByte)){
+                    for ( String key : markerBytes.keySet() ) {
+                        if (key == "startMarker"){
+                            continue;
+                        }
+                        if (markerBytes.get(key) == bufforByte){
+                            System.out.println("detected:" + key);
+                            if(key == "DQT")
+                            {
+                                //Pierwsze dwa elementy opisują rozmiar metadaty
+                                int[] test = new int[2];
+                                for(int i=0;i<2;i++)
+                                {
+                                    test[i] = inputStream.read();
+                                }
+                                int l=Integer.parseInt(Integer.toHexString(test[0])+Integer.toHexString(test[1]),16);
+                                //-2 bo wczśnie wyciągliśmy dwa bity z inputstream
+                                inputStream.skip(l-2);
+                            }
+                            if(key == "DHT")
+                            {
+                                int[] test = new int[2];
+                                for(int i=0;i<2;i++)
+                                {
+                                    test[i] = inputStream.read();
+                                }
+                                int l=Integer.parseInt(Integer.toHexString(test[0])+Integer.toHexString(test[1]),16);
+                                inputStream.skip(l-2);
+                            }
+                            if(key == "DRI")
+                            {
+                                int[] test = new int[2];
+                                for(int i=0;i<2;i++)
+                                {
+                                    test[i] = inputStream.read();
+                                }
+                                int l=Integer.parseInt(Integer.toHexString(test[0])+Integer.toHexString(test[1]),16);
+                                inputStream.skip(l-2);
+                            }
+                            if(key == "SOF0")
+                            {
+                                int[] test = new int[2];
+                                for(int i=0;i<2;i++)
+                                {
+                                    test[i] = inputStream.read();
+                                }
+                                int l=Integer.parseInt(Integer.toHexString(test[0])+Integer.toHexString(test[1]),16);
+                                inputStream.skip(l-2);
+                            }
+                            if(key == "SOS")
+                            {
+                                int[] test = new int[2];
+                                for(int i=0;i<2;i++)
+                                {
+                                    test[i] = inputStream.read();
+                                }
+                                int l=Integer.parseInt(Integer.toHexString(test[0])+Integer.toHexString(test[1]),16);
+                                inputStream.skip(l-2);
+                            }
+                        }
+                    }
+ 
+                }
+                this.firstByteMarkerSet = (bufforByte == markerBytes.get("startMarker"));
+                if(k>0)
+                {
+                    System.out.println(bufforByte);
+                    k--;
+                }
             } 
+
 
         } catch(IOException e){
             System.out.println("error while reading file." + e.getMessage());
@@ -51,21 +121,5 @@ public class DataOrganizer {
         }
     }
 
-    private void checkMarker(int Byte){
-        if (this.firstByteMarkerSet && markerBytes.containsValue(Byte)){
-            for ( String key : markerBytes.keySet() ) {
-                if (key == "startMarker"){
-                    continue;
-                }
-                if (markerBytes.get(key) == Byte){
-                    System.out.println("detected:" + key);
-                }
-            }
-        }
-        this.firstByteMarkerSet = (Byte == markerBytes.get("startMarker"));
-    }
 
-    private void processByte(int Byte){
-        checkMarker(Byte);
-    }
 }
