@@ -1,6 +1,12 @@
 {
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DHT",
+            "request": "launch",
+            "mainClass": "DataOrganizer.DHT",
+            "projectName": "EMedia_1f4de583"
+        },
         {
             "type": "java",
             "name": "CodeLens (Launch) - Main",
