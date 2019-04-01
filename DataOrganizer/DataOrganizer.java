@@ -30,7 +30,6 @@ public class DataOrganizer {
         int bufforByte;
 
         try{
-            int k =0;
             while((bufforByte = inputStream.read()) != -1){
                pos++;
                 if (this.firstByteMarkerSet && markerBytes.containsValue(bufforByte)){
@@ -69,11 +68,6 @@ public class DataOrganizer {
  
                 }
                 this.firstByteMarkerSet = (bufforByte == markerBytes.get("startMarker"));
-                if(k>0)
-                {
-                    System.out.println(bufforByte);
-                    k--;
-                }
             } 
 
 

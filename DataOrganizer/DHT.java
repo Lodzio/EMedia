@@ -46,28 +46,24 @@ public class DHT {
         }
 
 	public void run() throws IOException {
-        int i=0, j=0;
         int ctr = 0;
         Integer code = 0;
-        int table;
-        table   =  inputStream.read();
-        System.out.format("Huffman table #%02X:\n", table);
+        id   =  inputStream.read();
+        System.out.format("Huffman table #%02X:\n", id);
 
         ctr++;
         int[] countsByt = new int[16];
         inputStream.skip(2);
-        for(i=0;i<16;i++)
+        for(int i=0;i<16;i++)
         {
             countsByt[i] = inputStream.read();
                 System.out.println(i+"."+countsByt[i]);
                 ctr++;
          }
-         i=0;
-        for (i = 0; i < 16; i++) {
-            for (j = 0; j < countsByt[i]; j++) {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < countsByt[i]; j++) {
                 Key tmp = new Key(1+i,code);
-                int test = inputStream.read();
-                        huffData.put(tmp,  test);
+                        huffData.put(tmp,  inputStream.read());
                         code++;
                         ctr++;
                     }
