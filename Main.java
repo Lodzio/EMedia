@@ -5,7 +5,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        String fileName = "Kwiatek_1533.jpg";
+        String fileName = "test.jpg";
 
         try{
             FileInputStream fileReader = new FileInputStream(fileName);
