@@ -76,10 +76,10 @@ public class DHT {
                     for(Key key: huffData.keySet())
                     {
                         System.out.format("    %04X at length %d = %02X\n", 
-                        key.x,key.y,huffData.get(key));
+                        key.y,key.x,huffData.get(key));
 
                     }
-                    inputStream.skip(ctr);
+                    // inputStream.skip(ctr);
         } catch(IOException e){
             System.out.println("error while reading DHT." + e.getMessage());
         }
