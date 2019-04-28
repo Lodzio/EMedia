@@ -1,14 +1,17 @@
 import java.io.*;
+import PositionInputStream.PositionInputStream;
 import DataOrganizer.DataOrganizer;
 
 public class Main {
 
+    static final String metroFileName = "Metro.jpg";
+    static final String kwiatekFileName = "Kwiatek_1533.jpg";
 
     public static void main(String[] args) {
-        String fileName = "test.jpg";
+        String fileName = metroFileName;
 
         try{
-            FileInputStream fileReader = new FileInputStream(fileName);
+            PositionInputStream fileReader = new PositionInputStream(fileName);
             DataOrganizer dataOrganizer = new DataOrganizer(fileReader);
 
             dataOrganizer.run();
