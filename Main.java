@@ -1,24 +1,22 @@
 import java.io.*;
-
 import PositionInputStream.PositionInputStream;
 import RSA_alg.PrimeNumber;
 import RSA_alg.RSA_alg;
 import DataOrganizer.DataOrganizer;
-
+import UserInterface.Menu;
 public class Main {
 
     static final String metroFileName = "Metro.jpg";
     static final String kwiatekFileName = "Kwiatek_1533.jpg";
     public static void main(String[] args) {
-        String fileName = metroFileName;
-        new PrimeNumber(129,255);
-        new RSA_alg();
-         try{
+        String fileName = metroFileName; 
+        PrimeNumber.init(129,255);
+        RSA_alg.init();
+        try{
             PositionInputStream fileReader = new PositionInputStream(fileName);
             DataOrganizer dataOrganizer = new DataOrganizer(fileReader);
-
+            // Menu.handleUserEvents();
             dataOrganizer.run();
-            new Menu();
             fileReader.close();
         } catch(FileNotFoundException ex) {
             System.out.println(

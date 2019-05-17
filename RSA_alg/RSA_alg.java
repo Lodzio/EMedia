@@ -11,11 +11,11 @@ public class RSA_alg{
             private static long d;
             private static long n;
 
-            public RSA_alg()
+            public static void init()
             {
                 sizePrimes = PrimeNumber.primes.size();
-                long q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes));
-                long p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes));
+                long q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
+                long p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
                 n = p*q;
                 long fi = (p - 1)*(q - 1);
                 d = modInverse(e, fi);

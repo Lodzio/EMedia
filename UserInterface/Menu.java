@@ -1,6 +1,5 @@
-
+package UserInterface;
 import java.util.Scanner;
-
 import DataOrganizer.DHT.DHT;
  
 public class Menu {
@@ -27,12 +26,10 @@ public class Menu {
         return w;
     }
  
-    public   Menu()
+    public static void handleUserEvents()
     {
         Scanner in = new Scanner(System.in);
- 
         int wybor = menu();
- 
         while(wybor!=0){
             switch(wybor){
                 case 1:
@@ -43,14 +40,10 @@ public class Menu {
                     break;
                 case 3:
                     informacja();
- 
+                    break;
             }
- 
- 
             wybor = menu();
         }
- 
- 
         System.out.println("     ****************************************");
         System.out.println("\n     Koniec programu\n\n");
     }

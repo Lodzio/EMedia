@@ -6,24 +6,25 @@ import java.util.List;
 public class PrimeNumber {
    static List<Long> primes = new ArrayList<Long>();
 
-    public PrimeNumber(long startPrimeNumber, long lastPrimeNumber) {
+    public static void init(long startPrimeNumber, long lastPrimeNumber) {
 
-        int isPrimeNumber = 1;
+        boolean isPrimeNumber = true;
 
         long halfPrimeNumber=startPrimeNumber/2;
         while(startPrimeNumber !=lastPrimeNumber)
         {
-        isPrimeNumber = 1;
-        for(long i=2;i<=halfPrimeNumber;i++){      
-            if(startPrimeNumber%i==0){      
-                isPrimeNumber = 0;
-                break;      
+            isPrimeNumber = true;
+            for(long i=2;i<=halfPrimeNumber;i++){      
+                if(startPrimeNumber%i==0){      
+                    isPrimeNumber = false;
+                    break;      
+                }
             }
-        }
-            if(isPrimeNumber == 1) 
+            if(isPrimeNumber) 
             {
-                primes.add(startPrimeNumber++);
+                primes.add(startPrimeNumber);
             }     
+            startPrimeNumber++;
         }  
     }
 }

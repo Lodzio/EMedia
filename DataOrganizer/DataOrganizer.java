@@ -2,6 +2,7 @@ package DataOrganizer;
 import PositionInputStream.PositionInputStream;
 import DataOrganizer.DHT.*;
 import DataOrganizer.SOF.*;
+import DataOrganizer.SOS.*;
 import java.io.*;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,6 +14,7 @@ public class DataOrganizer {
     private Map<String,Integer> markerBytes = new TreeMap<>();
     private Map<String,Runnable> markerHandler = new TreeMap<>();
     private final int markerSizeFields =2;
+    private SOS sos;
 
     @FunctionalInterface
     public interface Runnable {
@@ -37,13 +39,14 @@ public class DataOrganizer {
     private void initMarkerHandlers(){
         markerHandler.put("DRI",() -> skipMarkerSegments());
         markerHandler.put("DQT",() -> skipMarkerSegments());
-        markerHandler.put("SOS",() -> skipMarkerSegments());
+        markerHandler.put("SOS",() -> sos.run(true));
         markerHandler.put("DHT",() -> (new DHT(inputStream)).run());
-        markerHandler.put("SOF0",() -> (new SOF(inputStream)).run());
+        markerHandler.put("SOF0",() -> (new SOF(inputStream)).run(true));
     }
 
     public DataOrganizer(PositionInputStream _inputStream){
         inputStream = _inputStream;
+        sos = new SOS(inputStream);
         initMarkers();
         initMarkerHandlers();
     }
