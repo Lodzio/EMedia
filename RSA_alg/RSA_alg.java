@@ -7,28 +7,49 @@ public class RSA_alg{
     
             // https://www.di-mgt.com.au/rsa_alg.html#note4
             static int sizePrimes;
-            static long e = 3;
-            private static long d;
-            private static long n;
+            public static long e;
+            public static long d;
+            public static long n;
+            public static long p;
+            public static long q;
 
             public static void init()
             {
                 sizePrimes = PrimeNumber.primes.size();
-                long q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
-                long p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
+                 q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
+                 p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
                 n = p*q;
                 long fi = (p - 1)*(q - 1);
+                e = findE(fi);
                 d = modInverse(e, fi);
             }
 
-            public static long RSA_alg_encode( int data)
-            {           
-                return (long)Math.pow(data, e) % n;
+            private static long findE(long fi){
+                BigInteger bfi = BigInteger.valueOf(fi);
+                long[] possibleE = {3, 5, 17, 257, 65537};
+                long result = 0;
+                for (int i = 0; i < possibleE.length; i++){
+                    BigInteger be = BigInteger.valueOf(possibleE[i]);
+                    if (be.gcd(bfi).equals(BigInteger.ONE)){
+                        result = be.intValue();
+                        return result;
+                    }
+                }
+                return result;
             }
 
-            public static long RSA_alg_decode( int data)
+            public static long RSA_alg_encode( long data)
+            {           
+                BigInteger bData = BigInteger.valueOf(data);
+                bData = bData.pow((int)e).mod(BigInteger.valueOf(n));
+                return bData.intValue();
+            }
+
+            public static long RSA_alg_decode( long data)
             {
-                return (long)Math.pow(data, d) % n;
+                BigInteger bData = BigInteger.valueOf(data);
+                bData = bData.pow((int)d).mod(BigInteger.valueOf(n));
+                return bData.intValue();
             }
             
     

@@ -1,23 +1,29 @@
 package DataOrganizer.SOS;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Map;
+
 import PositionInputStream.PositionInputStream;
+import RSA_alg.RSA_alg;
 
 public class SOS {
     private PositionInputStream inputStream;
     private int sizeOfBlock = 0;
     private int[] buffor = {-1, -1, -1};
+    Map<String,Integer> markerBytes;
 
-    public SOS(PositionInputStream _inputStream) {
+    public SOS(PositionInputStream _inputStream, Map<String,Integer> _markerBytes) {
         inputStream = _inputStream;
+        markerBytes = _markerBytes;
     }
 
     public void run(boolean printData)
     {
         try {
             readHeader();
-
+            readImageData();
         } catch (IOException e) {
-            System.out.println("error while reading SOS." + e.getMessage());
+            System.out.println("error while reading SOS. " + e.getMessage());
         }
     }
 
@@ -39,6 +45,30 @@ public class SOS {
         if(!isEndOfBlock()){
             System.out.println("error while reading SOS.");
             return;
+        }
+    }
+
+    private void readImageData() throws IOException{
+        while(!checkIfFoundEndOfSegment()){
+            int data = inputStream.read();
+            decodeData(data);
+        }
+    }
+
+    private boolean checkIfFoundEndOfSegment() throws IOException{
+        inputStream.mark(2);
+        int segmentStartMarker = inputStream.read();
+        int marker = inputStream.read();
+        boolean result = (segmentStartMarker == 0xFF && markerBytes.containsValue(marker));
+        inputStream.reset();
+        return result;
+    }
+
+    private void decodeData(int data){
+        long encodedData = RSA_alg.RSA_alg_encode(data);
+        int decodedData = (int)RSA_alg.RSA_alg_decode(encodedData);
+        if (data != decodedData){
+            System.out.println("no, RSA nie dziala chyba jeszcze");
         }
     }
 

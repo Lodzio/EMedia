@@ -46,7 +46,7 @@ public class DataOrganizer {
 
     public DataOrganizer(PositionInputStream _inputStream){
         inputStream = _inputStream;
-        sos = new SOS(inputStream);
+        sos = new SOS(inputStream, markerBytes);
         initMarkers();
         initMarkerHandlers();
     }
