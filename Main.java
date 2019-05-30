@@ -1,7 +1,7 @@
 import java.io.*;
 import PositionInputStream.PositionInputStream;
-import RSA_alg.PrimeNumber;
-import RSA_alg.RSA_alg;
+import coding.PrimeNumber;
+import coding.RSA_alg;
 import DataOrganizer.DataOrganizer;
 import UserInterface.Menu;
 public class Main {

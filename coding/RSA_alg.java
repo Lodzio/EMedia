@@ -1,4 +1,4 @@
-package RSA_alg;
+package coding;
 
 import java.math.BigInteger;
 

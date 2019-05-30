@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import PositionInputStream.PositionInputStream;
-import RSA_alg.RSA_alg;
+import coding.XOR;
 
 public class SOS {
     private PositionInputStream inputStream;
     private int sizeOfBlock = 0;
     private int[] buffor = {-1, -1, -1};
+    // private XOR xor = new XOR();
     Map<String,Integer> markerBytes;
 
     public SOS(PositionInputStream _inputStream, Map<String,Integer> _markerBytes) {
@@ -68,8 +69,7 @@ public class SOS {
     }
 
     private void decodeData(int data){
-        long encodedData = RSA_alg.RSA_alg_encode(data);
-        changeFile(inputStream.getPos(),String.valueOf(encodedData));
+        // changeFile(inputStream.getPos() - 1,xor.encode(data));
         // int decodedData = (int)RSA_alg.RSA_alg_decode(encodedData);
         // if (data != decodedData){
         //     System.out.println("no, RSA nie dziala chyba jeszcze");
@@ -110,14 +110,14 @@ public class SOS {
         return (buffor[0] == 0 && buffor[1] == 63 && buffor[2] == 0);
     }
 
-    void changeFile(long posStart, String string) {
+    void changeFile(long posStart, byte data) {
         try {
             System.out.println("saving file ");
             PositionInputStream is = new PositionInputStream("Metro.jpg");
             FileWriter fstream = new FileWriter("Metro_kopia.jpg");
             BufferedWriter out = new BufferedWriter(fstream);
-            int inputLine;
-                out.write(string,(int)posStart,1);
+            is.skip(posStart);
+            out.write(data);
             out.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
