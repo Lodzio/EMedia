@@ -22,7 +22,7 @@ public class Menu {
  
         Scanner in = new Scanner(System.in);
         int w = in.nextInt();
- 
+        in.close();
         return w;
     }
  
@@ -33,10 +33,10 @@ public class Menu {
         while(wybor!=0){
             switch(wybor){
                 case 1:
-                    DHT.option= DHT.Option.ENCODE;
+                  //  DHT.option= DHT.Option.ENCODE;
                     break;
                 case 2:
-                    DHT.option= DHT.Option.DECODE;
+                   // DHT.option= DHT.Option.DECODE;
                     break;
                 case 3:
                     informacja();

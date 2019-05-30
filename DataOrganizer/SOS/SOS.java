@@ -1,6 +1,9 @@
 package DataOrganizer.SOS;
-import java.io.BufferedInputStream;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import PositionInputStream.PositionInputStream;
@@ -66,10 +69,11 @@ public class SOS {
 
     private void decodeData(int data){
         long encodedData = RSA_alg.RSA_alg_encode(data);
-        int decodedData = (int)RSA_alg.RSA_alg_decode(encodedData);
-        if (data != decodedData){
-            System.out.println("no, RSA nie dziala chyba jeszcze");
-        }
+        changeFile(inputStream.getPos(),String.valueOf(encodedData));
+        // int decodedData = (int)RSA_alg.RSA_alg_decode(encodedData);
+        // if (data != decodedData){
+        //     System.out.println("no, RSA nie dziala chyba jeszcze");
+        //}
     }
 
     private int readComponentIdentifier() throws IOException{
@@ -106,19 +110,14 @@ public class SOS {
         return (buffor[0] == 0 && buffor[1] == 63 && buffor[2] == 0);
     }
 
-    void changeFile(long posStart, List<String> str) {
+    void changeFile(long posStart, String string) {
         try {
             System.out.println("saving file ");
             PositionInputStream is = new PositionInputStream("Metro.jpg");
-            FileWriter fstream = new FileWriter("Metro — kopia.jpg");
+            FileWriter fstream = new FileWriter("Metro_kopia.jpg");
             BufferedWriter out = new BufferedWriter(fstream);
             int inputLine;
-            while ((inputLine = is.read()) != -1) {
-                if (inputLine == 0)
-                    is.skip(posStart);
-                    for(String s : str)
-                        out.write(s);
-                }
+                out.write(string,(int)posStart,1);
             out.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -1,7 +1,6 @@
 package RSA_alg;
 
-import java.io.*;
-import java.math.*;
+import java.math.BigInteger;
 
 public class RSA_alg{
     
