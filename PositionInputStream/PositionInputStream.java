@@ -1,11 +1,11 @@
 package PositionInputStream;
 import java.io.*;
 
-public class PositionInputStream extends FileInputStream {
+public class PositionInputStream extends BufferedInputStream {
     private long pos = 0;
 
     public PositionInputStream(String file) throws FileNotFoundException{
-        super(file);
+        super(new FileInputStream(file));
     }
 
     @Override

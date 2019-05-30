@@ -1,9 +1,10 @@
 package DataOrganizer.DHT;
 
-import PositionInputStream.PositionInputStream;
-import java.io.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import PositionInputStream.PositionInputStream;
 
 
 
@@ -46,28 +47,24 @@ public class DHT {
         
         }
 
-	public void run() {
+    public void run()
+    {
         try{
-            int ctr = 0;
             Integer code = 0;
             id = inputStream.read();
             System.out.format("Huffman table #%02X:\n", id);
-
-            ctr++;
             int[] countsByt = new int[16];
             inputStream.skip(2);
             for(int i=0;i<16;i++)
             {
                 countsByt[i] = inputStream.read();
                     System.out.println(i+"."+countsByt[i]);
-                    ctr++;
             }
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < countsByt[i]; j++) {
                     Key tmp = new Key(1+i,code);
                             huffData.put(tmp,  inputStream.read());
                             code++;
-                            ctr++;
                         }
                         code =(code*2);
                     }
@@ -79,7 +76,6 @@ public class DHT {
                         key.y,key.x,huffData.get(key));
 
                     }
-                    // inputStream.skip(ctr);
         } catch(IOException e){
             System.out.println("error while reading DHT." + e.getMessage());
         }
