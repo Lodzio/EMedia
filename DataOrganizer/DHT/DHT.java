@@ -47,18 +47,18 @@ public class DHT {
         
         }
 
-    public void run()
+    public void run(boolean display)
     {
         try{
             Integer code = 0;
             id = inputStream.read();
-            System.out.format("Huffman table #%02X:\n", id);
+            if (display){System.out.format("Huffman table #%02X:\n", id);}
             int[] countsByt = new int[16];
             inputStream.skip(2);
             for(int i=0;i<16;i++)
             {
                 countsByt[i] = inputStream.read();
-                    System.out.println(i+"."+countsByt[i]);
+                    if (display){System.out.println(i+"."+countsByt[i]);}
             }
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < countsByt[i]; j++) {
@@ -68,12 +68,12 @@ public class DHT {
                         }
                         code =(code*2);
                     }
-                    System.out.println();
+                    if (display){System.out.println();}
                     
                     for(Key key: huffData.keySet())
                     {
-                        System.out.format("    %04X at length %d = %02X\n", 
-                        key.y,key.x,huffData.get(key));
+                        if (display){System.out.format("    %04X at length %d = %02X\n", 
+                        key.y,key.x,huffData.get(key));}
 
                     }
         } catch(IOException e){
