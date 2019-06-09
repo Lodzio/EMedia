@@ -20,6 +20,15 @@ public class PositionInputStream extends BufferedInputStream {
         return super.skip(n);
     }
 
+  /*  @Override 
+    public void mark(int n) {
+        pos -= (long)n;
+    }*/
+
+    public void changePos(long n) {
+        pos += n;
+    }
+
     public long getPos(){
         return pos;
     }

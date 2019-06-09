@@ -51,6 +51,7 @@ public class SOS {
             System.out.println("error while reading SOS.");
             return;
         }
+        System.out.println(inputStream.getPos());
     }
 
     private void readImageData() throws IOException{
@@ -64,6 +65,7 @@ public class SOS {
         inputStream.mark(2);
         int segmentStartMarker = inputStream.read();
         int marker = inputStream.read();
+        inputStream.changePos(-2);
         boolean result = (segmentStartMarker == 0xFF && markerBytes.containsValue(marker));
         inputStream.reset();
         return result;
