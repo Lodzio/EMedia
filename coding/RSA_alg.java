@@ -44,11 +44,11 @@ public class RSA_alg{
                 return bData;
             }
 
-            public static BigInteger RSA_alg_decode( BigInteger data)
+            public static long RSA_alg_decode( BigInteger data)
             {
                 BigInteger bData = data;
                 bData = bData.pow(d.intValue()).mod(n);
-                return bData;
+                return bData.longValue();
             }
             
     

@@ -62,7 +62,8 @@ public class Menu {
             case 1:
                 PrimeNumber.init(new BigInteger("129"),new BigInteger("255"));
                 RSA_alg.init();
-                XOR.encodeKey((long x) -> RSA_alg.RSA_alg_encode(x));
+                XOR.encodeKey((Long x) -> RSA_alg.RSA_alg_encode(x));
+                XOR.deodeKey((BigInteger x) -> RSA_alg.RSA_alg_decode(x));
                 break;
             case 2:
             PrimeNumber.init(new BigInteger("170141183460469231731687303715884105729"),new BigInteger("340282366920938463463374607431768211455"));
