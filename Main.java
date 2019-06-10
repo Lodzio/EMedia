@@ -10,10 +10,9 @@ public class Main {
     static final String kwiatekFileName = "Kwiatek_1533.jpg";
     public static void main(String[] args) {
         String fileName = metroFileName; 
-        PrimeNumber.init(129,255);
-        RSA_alg.init();
         try{
             int wybor =1;
+            Menu.handleUserEventsRSA();
             while(wybor != 0)
             {
             PositionInputStream fileReader = new PositionInputStream(fileName);

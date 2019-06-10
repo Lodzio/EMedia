@@ -1,9 +1,13 @@
 package UserInterface;
 
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.Scanner;
 import DataOrganizer.DataOrganizer;
 import PositionInputStream.PositionInputStream;
+import coding.PrimeNumber;
+import coding.RSA_alg;
+import coding.XOR;
 
 public class Menu {
 
@@ -33,6 +37,41 @@ public class Menu {
         int w =Integer.parseInt(in.nextLine());
         
         return w;
+    }
+
+    public static int menu_rsa_byte(Scanner in) {
+        System.out.println();
+        System.out.println("     ****************************************");
+        System.out.println("     *            MENU_RSA_byte             *");
+        System.out.println("     ****************************************");
+        System.out.println("     1. 8 bit");
+        System.out.println("     2. 128 bit");
+        System.out.println("     0. Koniec");
+
+        //Scanner in = new Scanner(System.in);
+        int w =Integer.parseInt(in.nextLine());
+        
+        return w;
+    }
+
+    public static int handleUserEventsRSA()
+    {
+        int wybor = menu_rsa_byte(in);
+        while (wybor != 0) {
+            switch (wybor) {
+            case 1:
+                PrimeNumber.init(new BigInteger("129"),new BigInteger("255"));
+                RSA_alg.init();
+                XOR.encodeKey((long x) -> RSA_alg.RSA_alg_encode(x));
+                break;
+            case 2:
+            PrimeNumber.init(new BigInteger("170141183460469231731687303715884105729"),new BigInteger("340282366920938463463374607431768211455"));
+                RSA_alg.init();
+                    break;
+            }
+            break;
+        }
+        return wybor;
     }
 
     public static int handleUserEvents(DataOrganizer dataOrganizer) {
