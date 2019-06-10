@@ -13,11 +13,15 @@ public class Main {
         PrimeNumber.init(129,255);
         RSA_alg.init();
         try{
+            int wybor =1;
+            while(wybor != 0)
+            {
             PositionInputStream fileReader = new PositionInputStream(fileName);
             DataOrganizer dataOrganizer = new DataOrganizer(fileReader);
-            // Menu.handleUserEvents();
-            dataOrganizer.run();
+             wybor = Menu.handleUserEvents(dataOrganizer);
+            //dataOrganizer.run();
             fileReader.close();
+            }
         } catch(FileNotFoundException ex) {
             System.out.println(
                 "Unable to open file '" + 

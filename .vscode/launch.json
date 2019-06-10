@@ -4,7 +4,16 @@
             "type": "java",
             "name": "CodeLens (Launch) - Main",
             "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "console": "externalTerminal",
+            "internalConsoleOptions": "openOnSessionStart",
             "mainClass": "Main"
-        }
+        },
+                {
+                    "type": "java",
+                    "name": "CodeLens (Launch) - Main",
+                    "request": "launch",
+                    "mainClass": "Main"
+                }
     ]
 }

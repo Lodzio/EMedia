@@ -7,7 +7,11 @@ import java.io.RandomAccessFile;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.org.apache.xml.internal.serializer.ElemDesc;
+
 import PositionInputStream.PositionInputStream;
+import UserInterface.Menu;
+import UserInterface.Menu.Option;
 import coding.XOR;
 
 public class SOS {
@@ -51,14 +55,21 @@ public class SOS {
             System.out.println("error while reading SOS.");
             return;
         }
-        System.out.println(inputStream.getPos());
     }
 
     private void readImageData() throws IOException{
-        while(!checkIfFoundEndOfSegment()){
+        if(Menu.option == Option.DECODE){
+            while(!checkIfFoundEndOfSegment()){
             int data = inputStream.read();
             decodeData(data);
         }
+    }
+        else
+            while(!checkIfFoundEndOfSegment()){
+                int data = inputStream.read();
+                decodeData(data);
+            }
+            Menu.settingMinPositionToCheck = inputStream.getPos()-2;
     }
 
     private boolean checkIfFoundEndOfSegment() throws IOException{
@@ -66,7 +77,7 @@ public class SOS {
         int segmentStartMarker = inputStream.read();
         int marker = inputStream.read();
         inputStream.changePos(-2);
-        boolean result = (segmentStartMarker == 0xFF && markerBytes.containsValue(marker));
+        boolean result = (segmentStartMarker == 0xFF && markerBytes.containsValue(marker) && Menu.settingMinPositionToCheck < inputStream.getPos());
         inputStream.reset();
         return result;
     }
@@ -111,7 +122,7 @@ public class SOS {
 
     void changeFile(long posStart, byte data) {
         try {
-            RandomAccessFile out = new RandomAccessFile("Metro (kopia).jpg", "rw");
+            RandomAccessFile out = new RandomAccessFile("Metro.jpg", "rw");
             out.seek(posStart);
             out.writeByte(data);
             out.close();

@@ -1,16 +1,25 @@
 package UserInterface;
+
+import java.io.FileNotFoundException;
 import java.util.Scanner;
-import DataOrganizer.DHT.DHT;
- 
+import DataOrganizer.DataOrganizer;
+import PositionInputStream.PositionInputStream;
+
 public class Menu {
- 
- 
-    public static void informacja(){
-        System.out.println("Program do szyfrowania obrazów"
-                                + "jpeg z zastosowaniem instrukji switch.");
+
+    public static enum Option {
+        NORMAL, ENCODE, DECODE
     }
- 
-    public static int menu(){
+
+    public static Option option = Option.NORMAL;
+    public static long settingMinPositionToCheck;
+    static Scanner in = new Scanner(System.in);
+
+    public static void informacja() {
+        System.out.println("Program do szyfrowania obrazów" + " jpeg z zastosowaniem instrukji switch.");
+    }
+
+    public static int menu(Scanner in) {
         System.out.println();
         System.out.println("     ****************************************");
         System.out.println("     *                 MENU                 *");
@@ -19,32 +28,43 @@ public class Menu {
         System.out.println("     2. Decode");
         System.out.println("     3. Informaja");
         System.out.println("     0. Koniec");
- 
-        Scanner in = new Scanner(System.in);
-        int w = in.nextInt();
-        in.close();
+
+        //Scanner in = new Scanner(System.in);
+        int w =Integer.parseInt(in.nextLine());
+        
         return w;
     }
- 
-    public static void handleUserEvents()
-    {
-        Scanner in = new Scanner(System.in);
-        int wybor = menu();
-        while(wybor!=0){
-            switch(wybor){
-                case 1:
-                  //  DHT.option= DHT.Option.ENCODE;
-                    break;
-                case 2:
-                   // DHT.option= DHT.Option.DECODE;
+
+    public static int handleUserEvents(DataOrganizer dataOrganizer) {
+        
+        int wybor = menu(in);
+        while (wybor != 0) {
+            switch (wybor) {
+            case 1:
+                option = Option.ENCODE;
+                dataOrganizer.run();
+                break;
+            case 2:
+                option = Option.DECODE;
+               /* PositionInputStream fileReader;
+                try {
+                    fileReader = new PositionInputStream("Setting.txt");
+                    settingMinPositionToCheck = fileReader.getsettingMinPositionToCheck();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }*/
+                  
+                    dataOrganizer.run();
                     break;
                 case 3:
                     informacja();
                     break;
             }
-            wybor = menu();
+            break;
         }
-        System.out.println("     ****************************************");
-        System.out.println("\n     Koniec programu\n\n");
+        return wybor;
+       // System.out.println("     ****************************************");
+       // System.out.println("\n     Koniec programu\n\n");
     }
 }

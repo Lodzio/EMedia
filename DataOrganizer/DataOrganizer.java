@@ -1,4 +1,5 @@
 package DataOrganizer;
+
 import PositionInputStream.PositionInputStream;
 import DataOrganizer.DHT.*;
 import DataOrganizer.SOF.*;
@@ -11,9 +12,9 @@ public class DataOrganizer {
 
     private PositionInputStream inputStream;
     private boolean firstByteMarkerSet = false;
-    private Map<String,Integer> markerBytes = new TreeMap<>();
-    private Map<String,Runnable> markerHandler = new TreeMap<>();
-    private final int markerSizeFields =2;
+    private Map<String, Integer> markerBytes = new TreeMap<>();
+    private Map<String, Runnable> markerHandler = new TreeMap<>();
+    private final int markerSizeFields = 2;
     private SOS sos;
 
     @FunctionalInterface
@@ -21,7 +22,7 @@ public class DataOrganizer {
         public void run();
     }
 
-    private void initMarkers(){
+    private void initMarkers() {
         markerBytes.put("startMarker", 0xFF);
         markerBytes.put("SOI", 0xD8);
         markerBytes.put("SOF0", 0xC0);
@@ -31,46 +32,46 @@ public class DataOrganizer {
         markerBytes.put("DRI", 0xDD);
         markerBytes.put("SOS", 0xDA);
         markerBytes.put("COM", 0xFE);
-        markerBytes.put("EOI", 0xD9 );
+        markerBytes.put("EOI", 0xD9);
         markerBytes.put("APP1", 0xE1);
         markerBytes.put("APP2", 0xE2);
     }
 
-    private void initMarkerHandlers(){
-        markerHandler.put("DRI",() -> skipMarkerSegments());
-        markerHandler.put("DQT",() -> skipMarkerSegments());
-        markerHandler.put("SOS",() -> sos.run(true));
-        markerHandler.put("DHT",() -> (new DHT(inputStream)).run(false));
-        markerHandler.put("SOF0",() -> (new SOF(inputStream)).run(false));
+    private void initMarkerHandlers() {
+        markerHandler.put("DRI", () -> skipMarkerSegments());
+        markerHandler.put("DQT", () -> skipMarkerSegments());
+        markerHandler.put("SOS", () -> sos.run(true));
+        markerHandler.put("DHT", () -> (new DHT(inputStream)).run(false));
+        markerHandler.put("SOF0", () -> (new SOF(inputStream)).run(false));
     }
 
-    public DataOrganizer(PositionInputStream _inputStream){
+    public DataOrganizer(PositionInputStream _inputStream) {
         inputStream = _inputStream;
         sos = new SOS(inputStream, markerBytes);
         initMarkers();
         initMarkerHandlers();
     }
 
-    public void run(){
+    public void run() {
         int bufforByte;
-        try{
-            while((bufforByte = inputStream.read()) != -1){
-                if (this.firstByteMarkerSet && markerBytes.containsValue(bufforByte)){
-                    for ( String key : markerBytes.keySet() ) {
-                        if (key == "startMarker"){
+        try {
+            while ((bufforByte = inputStream.read()) != -1) {
+                if (this.firstByteMarkerSet && markerBytes.containsValue(bufforByte)) {
+                    for (String key : markerBytes.keySet()) {
+                        if (key == "startMarker") {
                             continue;
                         }
-                        if (markerBytes.get(key) == bufforByte){
-                            System.out.println("\ndetected:" + key+" position "+ inputStream.getPos());
-                            if (markerHandler.containsKey(key)){
+                        if (markerBytes.get(key) == bufforByte) {
+                            System.out.println("\ndetected:" + key + " position " + inputStream.getPos());
+                            if (markerHandler.containsKey(key)) {
                                 markerHandler.get(key).run();
                             }
                         }
                     }
                 }
                 this.firstByteMarkerSet = (bufforByte == markerBytes.get("startMarker"));
-            } 
-        } catch(IOException e){
+            }
+        } catch (IOException e) {
             System.out.println("error while reading file." + e.getMessage());
         }
     }
