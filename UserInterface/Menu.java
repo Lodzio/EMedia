@@ -61,6 +61,7 @@ public class Menu {
             switch (wybor) {
             case 1:
                 PrimeNumber.mod_alg(new BigInteger("129"),new BigInteger("255"));
+                XOR.generateKey();
                 RSA_alg.init();
                 XOR.encodeKey((Long x) -> RSA_alg.RSA_alg_encode(x));
                 XOR.deodeKey((BigInteger x) -> RSA_alg.RSA_alg_decode(x));

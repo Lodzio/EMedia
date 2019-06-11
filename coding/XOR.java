@@ -6,6 +6,11 @@ public class XOR {
     private static long key = 100;
     static BigInteger codeKey;
 
+    public static void generateKey(){
+        Random generator = new Random();
+        key = 1 + (int)generator.nextDouble()*254;
+    }
+
     public byte xor(byte input){
         return (byte)(key ^ input);
     }
