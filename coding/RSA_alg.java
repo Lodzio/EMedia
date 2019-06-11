@@ -20,7 +20,9 @@ public class RSA_alg{
                 n = p.multiply(q);
                 BigInteger fi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
                 e = findE(fi);
+                System.out.println("e: "+e.toString());
                 d = modInverse(e, fi);
+                System.out.println(e.toString());
             }
 
             private static BigInteger findE(BigInteger fi){
