@@ -15,14 +15,16 @@ public class RSA_alg{
             public static void init()
             {
                 sizePrimes = PrimeNumber.primes.size();
-                 q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
-                 p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
+                int tmp  =getRandomIntegerBetweenRange(0,sizePrimes - 1);
+                 q = PrimeNumber.primes.get(tmp);
+                 PrimeNumber.primes.remove(tmp);
+              //   q = new BigInteger("10910616967349110231723734078614922645337060882141748968209834225138976011179993394299810159736904468554021708289824396553412180514827996444845438176099728");
+                 p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 2));
+              //   p= new BigInteger("10933766183632575817611517034730668287155799984632223454138745671121273456287670008290843302875521274970245314593222946129064538358581018615539828479146468");
                 n = p.multiply(q);
                 BigInteger fi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
                 e = findE(fi);
-                System.out.println("e: "+e.toString());
-                d = modInverse(e, fi);
-                System.out.println(e.toString());
+                d = e.modInverse(fi);// modInverse(e, fi);
             }
 
             private static BigInteger findE(BigInteger fi){
@@ -31,7 +33,7 @@ public class RSA_alg{
                 BigInteger result = new BigInteger("0");
                 for (int i = 0; i < possibleE.length; i++){
                     BigInteger be = BigInteger.valueOf(possibleE[i]);
-                    if (be.gcd(bfi).equals(BigInteger.ONE)){
+                    if (be.gcd(bfi).compareTo(BigInteger.ONE) == 0){
                         result = be;
                         return result;
                     }
@@ -42,14 +44,14 @@ public class RSA_alg{
             public static BigInteger RSA_alg_encode( long data)
             {           
                 BigInteger bData = BigInteger.valueOf(data);
-                bData = bData.pow(e.intValue()).mod(n);
+                bData = bData.modPow(e,n);
                 return bData;
             }
 
             public static long RSA_alg_decode( BigInteger data)
             {
                 BigInteger bData = data;
-                bData = bData.pow(d.intValue()).mod(n);
+                bData = bData.modPow(d,n);
                 return bData.longValue();
             }
             

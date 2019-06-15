@@ -1,5 +1,7 @@
 package coding;
+
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.function.*;
  
 public class XOR {
@@ -8,7 +10,8 @@ public class XOR {
 
     public static void generateKey(){
         Random generator = new Random();
-        key = 1 + (int)generator.nextDouble()*254;
+        key = 1 + (int)(generator.nextDouble()*254);
+        System.out.println("Orgin key: " + key);
     }
 
     public byte xor(byte input){

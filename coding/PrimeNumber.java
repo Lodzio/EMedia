@@ -9,8 +9,8 @@ import java.util.Random;
 public class PrimeNumber {
    static List<BigInteger> primes = new ArrayList<BigInteger>();
 
-    public static void init(BigInteger startPrimeNumber, BigInteger lastPrimeNumber) {
-        if(MillerRabin(startPrimeNumber,lastPrimeNumber))
+    public static void init(BigInteger startPrimeNumber) {
+        if(MillerRabin(startPrimeNumber))
         {
         primes.add(startPrimeNumber);
        System.out.println("Liczba " + startPrimeNumber.toString() + "jest liczba pierwszą ");
@@ -19,57 +19,72 @@ public class PrimeNumber {
         System.out.println("Liczba " + startPrimeNumber.toString() + " nie jest liczba pierwszą ");
     }
 
-    public static boolean MillerRabin(BigInteger n, BigInteger lastPrimeNumber)
-    {
-        int iteration = n.subtract(lastPrimeNumber).intValue();
-        /** base case **/
-        if (n.compareTo(BigInteger.ZERO) == 0 || n.compareTo(BigInteger.ONE) == 0)
-            return false;
-        /** base case - 2 is prime **/
-        if (n.compareTo(BigInteger.valueOf(2)) == 0)
-            return true;
-        /** an even number other than 2 is composite **/
-        if (n.mod(BigInteger.valueOf(2)).compareTo(BigInteger.ZERO) == 0)
-            return false;
+    public static boolean MillerRabin(BigInteger n, int precision) {
  
-        BigInteger s = n.subtract(BigInteger.ONE);
-        while (s.mod(BigInteger.valueOf(2)).compareTo(BigInteger.ZERO) == 0)
-            s = s.divide(BigInteger.valueOf(2));
+        if (n.compareTo(new BigInteger("341550071728321")) >= 0) {
+            return n.isProbablePrime(precision);
+        }
  
-        Random rand = new Random();
-        for (int i = 0; i < iteration; i++)
-        {
-            BigInteger r = BigInteger.valueOf(rand.nextLong()).abs();            
-            BigInteger a = r.mod(n.subtract(BigInteger.ONE)).add(BigInteger.ONE), temp = s;
-            BigInteger mod = modPow(a, temp, n);
-            while (temp.compareTo(n.subtract(BigInteger.ONE)) != 0 && mod.compareTo(BigInteger.ONE) != 0 && mod.compareTo(n.subtract(BigInteger.ONE)) != 0)
-            {
-                mod = mulMod(mod, mod, n);
-                temp = temp.multiply(BigInteger.valueOf(2));
-            }
-            if (mod.compareTo(n.subtract(BigInteger.ONE)) != 0 && temp.mod(BigInteger.valueOf(2)).compareTo(BigInteger.ZERO) == 0)
+        int intN = n.intValue();
+        if (intN == 1 || intN == 4 || intN == 6 || intN == 8) return false;
+        if (intN == 2 || intN == 3 || intN == 5 || intN == 7) return true;
+ 
+        int[] primesToTest = getPrimesToTest(n);
+        if (n.equals(new BigInteger("3215031751"))) {
+            return false;
+        }
+        BigInteger d = n.subtract(BigInteger.ONE);
+        BigInteger s = BigInteger.ZERO;
+        while (d.mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO)) {
+            d = d.shiftRight(1);
+            s = s.add(BigInteger.ONE);
+        }
+        for (int a : primesToTest) {
+            if (try_composite(a, d, n, s)) {
                 return false;
+            }
         }
-        return true;        
-    }
-    /** Function to calculate (a ^ b) % c **/
-    public static BigInteger modPow(BigInteger a, BigInteger b, BigInteger c)
-    {
-        BigInteger res = BigInteger.ONE;
-        for (BigInteger i = BigInteger.ZERO; i.compareTo(b)<0; i.add(BigInteger.ONE))
-        {
-            res = res.multiply(a);
-            res = res.mod(c); 
-        }
-        return res.mod(c);
-    }
-    /** Function to calculate (a * b) % c **/
-    public static BigInteger mulMod(BigInteger a, BigInteger b, BigInteger mod) 
-    {
-        return a.multiply(b).mod(mod);
+        return true;
     }
 
-            void Sieve_of_Atkin(BigInteger startPrimeNumber, BigInteger lastPrimeNumber){
+    private static int[] getPrimesToTest(BigInteger n) {
+        if (n.compareTo(new BigInteger("3474749660383")) >= 0) {
+            return new int[]{2, 3, 5, 7, 11, 13, 17};
+        }
+        if (n.compareTo(new BigInteger("2152302898747")) >= 0) {
+            return new int[]{2, 3, 5, 7, 11, 13};
+        }
+        if (n.compareTo(new BigInteger("118670087467")) >= 0) {
+            return new int[]{2, 3, 5, 7, 11};
+        }
+        if (n.compareTo(new BigInteger("25326001")) >= 0) {
+            return new int[]{2, 3, 5, 7};
+        }
+        if (n.compareTo(new BigInteger("1373653")) >= 0) {
+            return new int[]{2, 3, 5};
+        }
+        return new int[]{2, 3};
+    }
+ 
+ 
+    public static boolean MillerRabin(BigInteger n) {
+        return MillerRabin(n, 100);
+    }
+    private static boolean try_composite(int a, BigInteger d, BigInteger n, BigInteger s) {
+        BigInteger aB = BigInteger.valueOf(a);
+        if (aB.modPow(d, n).equals(BigInteger.ONE)) {
+            return false;
+        }
+        for (int i = 0; BigInteger.valueOf(i).compareTo(s) < 0; i++) {
+            // if pow(a, 2**i * d, n) == n-1
+            if (aB.modPow(BigInteger.valueOf(2).pow(i).multiply(d), n).equals(n.subtract(BigInteger.ONE))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void Sieve_of_Atkin(BigInteger startPrimeNumber, BigInteger lastPrimeNumber){
                 HashSet<BigInteger> sieve = new HashSet<BigInteger>(); 
                 for (BigInteger x=BigInteger.ONE; x.multiply(x).compareTo(lastPrimeNumber) <0; x = x.add(BigInteger.ONE)) { 
                     for (BigInteger y = BigInteger.ONE;y.multiply(y).compareTo(lastPrimeNumber) <0; y = y.add(BigInteger.ONE)) { 

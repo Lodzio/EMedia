@@ -18,6 +18,9 @@ public class Menu {
     public static Option option = Option.NORMAL;
     public static long settingMinPositionToCheck;
     static Scanner in = new Scanner(System.in);
+    static final String metroFileName = "Metro.jpg";
+    static final String kwiatekFileName = "Kwiatek_1533.jpg";
+    public static String fileName = metroFileName; 
 
     public static void informacja() {
         System.out.println("Program do szyfrowania obrazów" + " jpeg z zastosowaniem instrukji switch.");
@@ -68,9 +71,12 @@ public class Menu {
                 break;
             case 2:
             //340282366920938463463374607431768211455
-            for(int i =0; i<1;i++)
-            PrimeNumber.init(new BigInteger("170141183460469231731687303715884105729").subtract(BigInteger.valueOf(i)),new BigInteger("170141183460469231731687303715884105829"));
+            for(int i =0; i<30;i++)
+            PrimeNumber.init(new BigInteger("170141183460469231731687303715884105729").subtract(BigInteger.valueOf(i)));
                 RSA_alg.init();
+                XOR.generateKey();
+                XOR.encodeKey((Long x) -> RSA_alg.RSA_alg_encode(x));
+                XOR.deodeKey((BigInteger x) -> RSA_alg.RSA_alg_decode(x));
                     break;
             }
             break;
