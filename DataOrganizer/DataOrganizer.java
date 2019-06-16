@@ -41,8 +41,8 @@ public class DataOrganizer {
         markerHandler.put("DRI", () -> skipMarkerSegments());
         markerHandler.put("DQT", () -> skipMarkerSegments());
         markerHandler.put("SOS", () -> sos.run(true));
-        markerHandler.put("DHT", () -> (new DHT(inputStream)).run(false));
-        markerHandler.put("SOF0", () -> (new SOF(inputStream)).run(false));
+        markerHandler.put("DHT", () -> (new DHT(inputStream)).run(true));
+        markerHandler.put("SOF0", () -> (new SOF(inputStream)).run(true));
     }
 
     public DataOrganizer(PositionInputStream _inputStream) {

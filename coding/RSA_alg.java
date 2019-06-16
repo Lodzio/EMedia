@@ -6,49 +6,53 @@ public class RSA_alg{
     
             // https://www.di-mgt.com.au/rsa_alg.html#note4
             static int sizePrimes;
-            public static long e;
-            public static long d;
-            public static long n;
-            public static long p;
-            public static long q;
+            public static BigInteger e;
+            public static BigInteger d;
+            public static BigInteger n;
+            public static BigInteger p;
+            public static BigInteger q;
 
             public static void init()
             {
                 sizePrimes = PrimeNumber.primes.size();
-                 q = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
-                 p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 1));
-                n = p*q;
-                long fi = (p - 1)*(q - 1);
+                int tmp  =getRandomIntegerBetweenRange(0,sizePrimes - 1);
+                 q = PrimeNumber.primes.get(tmp);
+                 PrimeNumber.primes.remove(tmp);
+              //   q = new BigInteger("10910616967349110231723734078614922645337060882141748968209834225138976011179993394299810159736904468554021708289824396553412180514827996444845438176099728");
+                 p = PrimeNumber.primes.get(getRandomIntegerBetweenRange(0,sizePrimes - 2));
+              //   p= new BigInteger("10933766183632575817611517034730668287155799984632223454138745671121273456287670008290843302875521274970245314593222946129064538358581018615539828479146468");
+                n = p.multiply(q);
+                BigInteger fi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
                 e = findE(fi);
-                d = modInverse(e, fi);
+                d = e.modInverse(fi);// modInverse(e, fi);
             }
 
-            private static long findE(long fi){
-                BigInteger bfi = BigInteger.valueOf(fi);
+            private static BigInteger findE(BigInteger fi){
+                BigInteger bfi = fi;
                 long[] possibleE = {3, 5, 17, 257, 65537};
-                long result = 0;
+                BigInteger result = new BigInteger("0");
                 for (int i = 0; i < possibleE.length; i++){
                     BigInteger be = BigInteger.valueOf(possibleE[i]);
-                    if (be.gcd(bfi).equals(BigInteger.ONE)){
-                        result = be.intValue();
+                    if (be.gcd(bfi).compareTo(BigInteger.ONE) == 0){
+                        result = be;
                         return result;
                     }
                 }
                 return result;
             }
 
-            public static long RSA_alg_encode( long data)
+            public static BigInteger RSA_alg_encode( long data)
             {           
                 BigInteger bData = BigInteger.valueOf(data);
-                bData = bData.pow((int)e).mod(BigInteger.valueOf(n));
-                return bData.intValue();
+                bData = bData.modPow(e,n);
+                return bData;
             }
 
-            public static long RSA_alg_decode( long data)
+            public static long RSA_alg_decode( BigInteger data)
             {
-                BigInteger bData = BigInteger.valueOf(data);
-                bData = bData.pow((int)d).mod(BigInteger.valueOf(n));
-                return bData.intValue();
+                BigInteger bData = data;
+                bData = bData.modPow(d,n);
+                return bData.longValue();
             }
             
     
@@ -58,13 +62,13 @@ public class RSA_alg{
         return x;
     }
 
-    static long modInverse(long a, long m) 
+    static BigInteger modInverse(BigInteger a, BigInteger m) 
     { 
-        a = a % m; 
-        for (long x = 1; x < m; x++) 
-           if ((a * x) % m == 1) 
+        a = a.mod(m); 
+        for (BigInteger x = BigInteger.ONE; x.compareTo(m) < 0;x= x.add(BigInteger.ONE)) 
+           if ((a.multiply(x)).mod(m).compareTo(BigInteger.ONE) == 0) 
               return x; 
-        return 1; 
+        return BigInteger.ONE; 
     } 
 
 

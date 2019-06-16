@@ -12,6 +12,8 @@ import PositionInputStream.PositionInputStream;
 import UserInterface.Menu;
 import UserInterface.Menu.Option;
 import coding.XOR;
+import UserInterface.Menu;
+
 
 public class SOS {
     private PositionInputStream inputStream;
@@ -121,7 +123,7 @@ public class SOS {
 
     void changeFile(long posStart, byte data) {
         try {
-            RandomAccessFile out = new RandomAccessFile("Metro.jpg", "rw");
+            RandomAccessFile out = new RandomAccessFile(Menu.fileName, "rw");
             out.seek(posStart);
             out.writeByte(data);
             out.close();
