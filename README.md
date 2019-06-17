@@ -26,9 +26,9 @@ JPG wykorzystuje standard metadanych Exif dla plików z obrazkami. Metaznaczniki
 |      6      |  23.04   |       Generator liczb pierwszy klasyczny      |
 |      5      |  30.04   |          XOR - szyfowanie danych obrazka        |
 |      7      |  07.05   | Generator liczb pierwszy Sieve of Atkin  |
-|      7      |  21.05   | Menu |
-|      8      |  11.06   |    Metoda Miller Rabin     |
-|      9      |  15.06   |                    Podsumowanie, dokuemtowanie                  |
+|      8      |  21.05   | Menu |
+|      9      |  11.06   |    Metoda Miller Rabin     |
+|      10      |  15.06   |                    Podsumowanie, dokuemtowanie                  |
 
 ## Budowane z
 
